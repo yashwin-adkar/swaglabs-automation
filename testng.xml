@@ -5,9 +5,10 @@
         <listener class-name="utils.ExtentTestListener"/>
     </listeners>
 
-    <test name="Login Tests">
+    <test name="Swag Labs Tests">
         <classes>
             <class name="tests.LoginTest"/>
+            <class name="tests.InventoryTest"/>
         </classes>
     </test>
 
