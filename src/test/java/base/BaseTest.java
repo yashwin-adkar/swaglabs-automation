@@ -11,6 +11,10 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class BaseTest {
 
     protected WebDriver driver;
+    public WebDriver getDriver() {
+        return driver;
+    }
+
 
     @BeforeMethod
     public void setUp() {
