@@ -3,47 +3,31 @@ package tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import base.BaseTest;
+import base.AuthenticatedBaseTest;
 import pages.InventoryPage;
-import pages.LoginPage;
+import pages.CartPage;
 
-public class InventoryTest extends BaseTest {
+public class InventoryTest extends AuthenticatedBaseTest {
 
     @Test
-    public void verifyInventoryPageAndAddToCart() {
+    public void addToCartAndNavigateToCart() {
 
-        // 🔹 Step 1: Login first (PRE-CONDITION)
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login("standard_user", "secret_sauce");
-
-        // 🔹 Step 2: Inventory validations
         InventoryPage inventoryPage = new InventoryPage(driver);
 
-        Assert.assertTrue(
-                inventoryPage.isOnInventoryPage(),
-                "User is not on Inventory page"
-        );
+        // wait for inventory page
+        inventoryPage.waitForInventoryPage();
 
-        Assert.assertEquals(
-                inventoryPage.getProductsTitle(),
-                "Products"
-        );
-
-        Assert.assertTrue(
-                inventoryPage.getProductCount() > 0,
-                "No products displayed"
-        );
-
+        // add product
         inventoryPage.addBackpackToCart();
 
-        Assert.assertTrue(
-                inventoryPage.isRemoveButtonDisplayed(),
-                "Remove button not displayed"
-        );
+        // verify cart count
+        Assert.assertEquals(inventoryPage.getCartCount(), "1");
 
-        Assert.assertEquals(
-                inventoryPage.getCartBadgeCount(),
-                "1"
-        );
+        // click cart icon
+        inventoryPage.clickCartIcon();
+
+        // verify navigation
+        CartPage cartPage = new CartPage(driver);
+        Assert.assertTrue(cartPage.isOnCartPage());
     }
 }

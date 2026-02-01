@@ -5,7 +5,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class BaseTest {
@@ -15,23 +14,25 @@ public class BaseTest {
         return driver;
     }
 
-
     @BeforeMethod
     public void setUp() {
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
+        options.addArguments("--headless=new");   // recommended for latest Chrome
+        options.addArguments("--window-size=1920,1080");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--start-maximized");
 
         driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
         driver.get("https://www.saucedemo.com/");
     }
 
     @AfterMethod
     public void tearDown() {
-        driver.quit();
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
