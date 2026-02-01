@@ -33,5 +33,9 @@ public class InventoryPage {
 
     public void clickCartIcon() {
         wait.until(ExpectedConditions.elementToBeClickable(cartIcon)).click();
+
+        // 🔥 wait for cart page
+        wait.until(ExpectedConditions.urlContains("cart"));
     }
+
 }

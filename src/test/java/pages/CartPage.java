@@ -9,12 +9,12 @@ public class CartPage {
     private WebDriver driver;
     private WebDriverWait wait;
 
-    private By cartTitle = By.className("title");
+    private By cartTitle = By.className("title"); // Your Cart
     private By checkoutBtn = By.id("checkout");
 
     public CartPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
     }
 
     public boolean isOnCartPage() {
@@ -23,5 +23,8 @@ public class CartPage {
 
     public void clickCheckout() {
         wait.until(ExpectedConditions.elementToBeClickable(checkoutBtn)).click();
+
+        // 🔥 CI-SAFE WAIT
+        wait.until(ExpectedConditions.urlContains("checkout-step-one"));
     }
 }

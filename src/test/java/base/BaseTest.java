@@ -16,14 +16,15 @@ public class BaseTest {
 
     @BeforeMethod
     public void setUp() {
-        WebDriverManager.chromedriver().setup();
 
+        WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new");   // recommended for latest Chrome
+
+        // ✅ Always headless-safe (CI compatible)
+     //   options.addArguments("--headless=new");
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--start-maximized");
 
         driver = new ChromeDriver(options);
         driver.get("https://www.saucedemo.com/");

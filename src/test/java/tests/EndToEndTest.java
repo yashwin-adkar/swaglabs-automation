@@ -24,11 +24,10 @@ public class EndToEndTest extends AuthenticatedBaseTest {
 
         CheckoutPage checkout = new CheckoutPage(driver);
         checkout.enterDetailsAndContinue();
-
-        // 🔥 THIS WAS MISSING
-        checkout.waitForOverviewPage();
-
         checkout.finishCheckout();
+        Assert.assertTrue(checkout.isOrderPlaced());
+
+
         Assert.assertTrue(checkout.isOrderPlaced(), "Order not placed!");
     }
 }

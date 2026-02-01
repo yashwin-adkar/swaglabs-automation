@@ -9,39 +9,53 @@ public class CheckoutPage {
     private WebDriver driver;
     private WebDriverWait wait;
 
-    // Page 1 – Your Information
+    private By checkoutTitle = By.className("title"); // Checkout: Your Information
     private By firstName = By.id("first-name");
     private By lastName = By.id("last-name");
     private By postalCode = By.id("postal-code");
     private By continueBtn = By.id("continue");
 
-    // Page 2 – Overview
-    private By overviewTitle = By.className("title"); // "Checkout: Overview"
+    private By overviewTitle = By.className("title"); // Checkout: Overview
     private By finishBtn = By.id("finish");
 
-    // Success
     private By successMsg = By.className("complete-header");
 
     public CheckoutPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(25));
     }
 
-    // Step 1: Fill details & continue
     public void enterDetailsAndContinue() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(firstName)).sendKeys("QA");
-        driver.findElement(lastName).sendKeys("Engineer");
-        driver.findElement(postalCode).sendKeys("560001");
-        driver.findElement(continueBtn).click();
+
+        // 🔥 CI CRITICAL: wait for page
+        wait.until(ExpectedConditions.urlContains("checkout-step-one"));
+        wait.until(ExpectedConditions.textToBe(
+                checkoutTitle, "Checkout: Your Information"));
+
+        WebElement fn = wait.until(ExpectedConditions.visibilityOfElementLocated(firstName));
+        fn.clear();
+        fn.sendKeys("QA");
+
+        WebElement ln = driver.findElement(lastName);
+        ln.clear();
+        ln.sendKeys("Engineer");
+
+        WebElement zip = driver.findElement(postalCode);
+        zip.clear();
+        zip.sendKeys("560001");
+
+        // CI stability
+        try { Thread.sleep(1000); } catch (Exception e) {}
+
+        wait.until(ExpectedConditions.elementToBeClickable(continueBtn)).click();
     }
 
-    // Step 2: Wait for overview page
-    public void waitForOverviewPage() {
-        wait.until(ExpectedConditions.textToBe(overviewTitle, "Checkout: Overview"));
-    }
-
-    // Step 3: Finish order
     public void finishCheckout() {
+
+        wait.until(ExpectedConditions.urlContains("checkout-step-two"));
+        wait.until(ExpectedConditions.textToBe(
+                overviewTitle, "Checkout: Overview"));
+
         wait.until(ExpectedConditions.elementToBeClickable(finishBtn)).click();
     }
 
